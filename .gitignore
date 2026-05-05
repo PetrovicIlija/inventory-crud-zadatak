@@ -23,3 +23,14 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Razvojni alati (lokalno)
+/.claude
+/.mcp.json
+/.playwright-mcp
+
+# Nastavni materijali (privatni repo / Loomen)
+/vjezba-laravel-uvod
+/vjezba-uvod-php
+*.zip
+
