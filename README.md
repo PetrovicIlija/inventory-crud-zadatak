@@ -1,111 +1,52 @@
 # Inventar — Laravel CRUD Zadatak
 
-Kostur Laravel projekta za vježbu implementacije CRUD operacija na backendu.
+Kostur Laravel projekta za vježbu implementacije CRUD operacija.
 
 ---
 
-## Preduvjeti (Windows)
+## Pokretanje u GitHub Codespaces (preporučeno)
 
-Prije postavljanja projekta instaliraj sljedeće alate. Nakon svake instalacije otvori **novi** Command Prompt ili PowerShell prozor da bi se nove naredbe prepoznale.
+Codespaces je cloud razvojno okruženje — sve radi u browseru, **ne treba ništa instalirati**.
 
-### 1. Laragon (PHP + MySQL + Composer u jednom)
+### 1. Kreiraj Codespace
 
-Najlakši način za Windows — dolazi s PHP-om, MySQL-om, Composerom i Apacheom.
+1. Otvori repozitorij na GitHubu.
+2. Klikni zelenu **`<> Code`** tipku → tab **Codespaces** → **Create codespace on main**.
+3. Pričekaj 1–2 minute dok se okruženje ne postavi (composer install, migracije, seed — sve ide automatski).
 
-- Preuzmi: https://laragon.org/download/ (verzija **Full**)
-- Instaliraj i pokreni Laragon, klikni **Start All**.
-- Provjeri da je instalirana verzija PHP-a **8.3 ili novija**. Ako nije, u Laragonu: desni klik → **PHP** → **Version** → preuzmi noviju verziju.
+### 2. Pokreni server
 
-> Alternativa: zasebno instalirati [PHP 8.3+](https://windows.php.net/download/), [Composer](https://getcomposer.org/Composer-Setup.exe) i [MySQL](https://dev.mysql.com/downloads/installer/), ali Laragon je puno jednostavniji.
-
-### 2. Node.js 20+ (s npm-om)
-
-- Preuzmi LTS verziju: https://nodejs.org/
-- Instaliraj sa zadanim postavkama (uključuje npm).
-
-### 3. Git
-
-- Preuzmi: https://git-scm.com/download/win
-- Instaliraj sa zadanim postavkama.
-
-### 4. Sublime Text + paketi
-
-- Sublime Text: https://www.sublimetext.com/download
-- Instaliraj **Package Control** (Ctrl+Shift+P → "Install Package Control").
-- Preporučeni paketi (Ctrl+Shift+P → "Package Control: Install Package"):
-  - `PHP Companion` — autocomplete i navigacija po PHP klasama
-  - `Laravel Blade Highlighter` — bojanje Blade templatea
-  - `SublimeLinter` + `SublimeLinter-php` — provjera PHP sintakse
-  - `EditorConfig` — poštivanje `.editorconfig` postavki
-
-### 5. Provjera instalacije
-
-Otvori **Command Prompt** (cmd) i provjeri verzije:
-
-```cmd
-php -v
-composer -V
-mysql --version
-node -v
-npm -v
-git --version
-```
-
-Ako neka od naredbi ne radi, najčešće je problem u **PATH** varijabli — javi nastavniku.
-
----
-
-## Postavljanje projekta
-
-### 1. Kloniraj repozitorij
+U terminalu unutar Codespacesa:
 
 ```bash
-git clone <url-repozitorija>
-cd inventory-crud-zadatak
+php artisan serve --host=0.0.0.0
 ```
 
-### 2. Instaliraj PHP ovisnosti
+Codespaces će automatski otvoriti **Preview** tab. Otvori dodatak `/api/articles` na URL-u i trebao bi vidjeti JSON s artiklima.
+
+### 3. Što ćeš vidjeti
+
+- **Frontend (Blade UI):** korijenski URL `/` — tablica artikala, modal za dodavanje/uređivanje.
+- **API endpointi:** `/api/articles`, `/api/categories`.
+
+> Napomena: prvi put kad Codespaces forwarda port 8000, postavi ga na **Public** (desni klik na port → Port Visibility → Public) ako želiš dijeliti link s nekim.
+
+---
+
+## Lokalno (alternativa, npr. doma na Macu/Linuxu)
+
+Trebaš PHP 8.3+ i Composer.
 
 ```bash
 composer install
-```
-
-### 3. Postavi konfiguraciju
-
-```bash
-cp .env.example .env
+cp .env.codespaces .env
 php artisan key:generate
-```
-
-### 4. Postavi bazu podataka
-
-Otvori `.env` i provjeri podatke za MySQL:
-
-```
-DB_DATABASE=inventar
-DB_USERNAME=root
-DB_PASSWORD=          # tvoja lozinka (ili ostavi prazno)
-```
-
-Kreiraj bazu u MySQL-u:
-
-```sql
-CREATE DATABASE inventar;
-```
-
-### 5. Pokreni migracije i punjenje baze
-
-```bash
+touch database/database.sqlite
 php artisan migrate --seed
-```
-
-### 6. Pokreni razvojni server
-
-```bash
 php artisan serve
 ```
 
-Otvori `http://localhost:8000` u pregledniku.
+Otvori `http://localhost:8000`.
 
 ---
 
@@ -132,6 +73,10 @@ app/Http/Controllers/CategoryController.php
 ## Struktura projekta (relevantni dijelovi)
 
 ```
+.devcontainer/
+  devcontainer.json          ← Codespaces konfiguracija
+  setup.sh                   ← auto-setup skripta
+
 app/
   Http/
     Controllers/
@@ -139,16 +84,18 @@ app/
       ArticleController.php    ← TVOJ ZADATAK
     Requests/
       ArticleRequest.php       ← validacija (gotovo)
+    Resources/
+      ArticleResource.php
+      CategoryResource.php
   Models/
     Category.php
     Article.php
-  Http/Resources/
-    ArticleResource.php
-    CategoryResource.php
 database/
   migrations/
+  seeders/
 routes/
   api.php
+  web.php
 ```
 
 ---
@@ -162,3 +109,9 @@ routes/
 | PUT | `/api/articles/{id}` | Ažuriraj artikl |
 | DELETE | `/api/articles/{id}` | Obriši artikl |
 | GET | `/api/categories` | Lista kategorija |
+
+---
+
+## Predaja
+
+Svaki commit u tvom Codespaces-u + push na GitHub = predaja. Detalje vidi u radnom listu / na Loomenu.

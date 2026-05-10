@@ -31,6 +31,11 @@ Thumbs.db
 
 # Nastavni materijali (privatni repo / Loomen)
 /vjezba-laravel-uvod
+/vjezba-laravel-uvod-codespaces
 /vjezba-uvod-php
 *.zip
+
+# Codespaces / lokalna baza
+/database/database.sqlite
+/storage/app/seeded.flag
 
